@@ -1,7 +1,6 @@
 package part01.lesson01_java_refresher_course;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class JavaProgrammingPracticeExercises {
     /*
@@ -96,7 +95,7 @@ public class JavaProgrammingPracticeExercises {
 //        return Arrays.copyOf(array, k);
 //}
 
-    public static int[] topKLarger(int [] array, int k){
+    public static int[] topKLarger(int[] array, int k) {
         Arrays.sort(array);
         return Arrays.copyOfRange(array, array.length - k, array.length);
     }
@@ -112,6 +111,48 @@ public class JavaProgrammingPracticeExercises {
 //    }
 
 
+
+    /*
+    Complete the “translate number to word” coding exercise.
+    Given a non-negative integer n, print the number in words.
+     */
+
+    // This is based on their solution
+    // ----------------------------------------------------------THE BEGINNING--------------------------------------------------------------------
+    private static final String[] LESS_THAN_20 = {"", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten",
+            "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"};
+    private static final String[] TENS = {"", "ten", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"};
+    private static final String[] THOUSANDS = {"", "thousand", "million", "billion"};
+
+    public static String translateNumberToWord(int number) {
+        if (number == 0) return "zero";
+        int i = 0;
+        String words = "";
+        while (number > 0) {
+            if (number % 1000 != 0) {
+                words = helper(number % 1000) + THOUSANDS[i] + " " + words;
+            }
+            number /= 1000;
+            i ++;
+        }
+        String trimmed = words.trim();
+        if (trimmed.startsWith("and")){
+            return trimmed.substring(4, trimmed.length());
+        }
+        return trimmed;
+    }
+
+    private static String helper(int num) {
+        if (num == 0) return "";
+        else if (num < 20) return LESS_THAN_20[num] + " ";
+        else if (num < 100) return TENS[num / 10] + " " + helper(num % 10);
+        else return LESS_THAN_20[num / 100] + " hundred " + helper(num % 100);
+    }
+
+
+    // ----------------------------------------------------------THE END--------------------------------------------------------------------
+
+
     public static void main(String[] args) {
         System.out.println("Hello World");
         System.out.println(findDuplicate("abcd"));
@@ -119,5 +160,6 @@ public class JavaProgrammingPracticeExercises {
         System.out.println(reverseString("abcde"));
         System.out.println(Arrays.toString(topKLarger(new int[]{2, 11, 5, 4, 7, 3, 8, 9}, 3))); // for my solution
 //        System.out.println(topKLarger(new int[]{2, 11, 5, 4, 7, 3, 8, 9}, 5)); // for their solution
+        System.out.println(translateNumberToWord(29036012));
     }
 }
